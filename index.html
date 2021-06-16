@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="/assets/bsv.browser.min.js"></script>
+    <script src="/assets/run.browser.min.js"></script>
+  </head>
+  <body>
+    <script>
+
+    const purse = 'REDACTED';
+    const june142021 = {
+      "address" : "mnqTkwPKzEh6wUd3eR4x85ywWqD1zyg4X4",
+      "pubkey" : "REDACTED",
+      "privkey" : "REDACTED"
+    };
+
+    const run = new Run({
+      network: 'test',
+      owner: june142021.privkey,
+      purse: purse,
+      logger: console
+    });
+
+
+    function purseBalanceSuccessCallback(e) {
+      console.log("purse balance", e) // THIS WORKS
+      debugger
+    }
+    function purseBalanceFailureCallback(e) {
+      debugger
+    }
+
+    function syncSuccessCallback(a, b) {
+      // THIS ISN'T WORKING
+      debugger
+    }
+    function syncFailureCallback(a, b) {
+      debugger
+    }
+
+    async function fetchJigs() {
+      await run.inventory.sync()
+    }
+
+    let jigs = fetchJigs()
+    // WHY IS run.inventory.jigs still empty?
+
+    // run.inventory.sync().then(syncSuccessCallback, syncFailureCallback)
+    debugger
+
+    // run.purse.balance().then(purseBalanceSuccessCallback, purseBalanceFailureCallback);
+  </script>
+
+  </body>
+</html>
