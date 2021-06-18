@@ -20,9 +20,12 @@
       network: 'test',
       owner: june142021.privkey,
       purse: purse,
-      logger: console
+      logger: console,
+      cache: new Run.plugins.LocalCache()
     });
 
+    run.trust('*') // DO NOT USE IN PROODUCTION
+    // run.trust('txid') // trust each tx that defines the Jig classes
 
     function purseBalanceSuccessCallback(e) {
       console.log("purse balance", e) // THIS WORKS
@@ -33,7 +36,9 @@
     }
 
     function syncSuccessCallback(a, b) {
-      // THIS ISN'T WORKING
+      // NOW WORKS!
+      console.log("the first Jig:", run.inventory.jigs[0])
+      alert(run.inventory.jigs[0].body)
       debugger
     }
     function syncFailureCallback(a, b) {
@@ -44,13 +49,8 @@
       await run.inventory.sync()
     }
 
-    let jigs = fetchJigs()
-    // WHY IS run.inventory.jigs still empty?
-
-    // run.inventory.sync().then(syncSuccessCallback, syncFailureCallback)
-    debugger
-
-    // run.purse.balance().then(purseBalanceSuccessCallback, purseBalanceFailureCallback);
+    run.purse.balance().then(purseBalanceSuccessCallback, purseBalanceFailureCallback);
+    run.inventory.sync().then(syncSuccessCallback, syncFailureCallback);
   </script>
 
   </body>
